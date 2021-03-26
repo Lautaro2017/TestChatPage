@@ -1,9 +1,16 @@
 <meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1"/>
 
 
-<header>
-        <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
-</header>
+<head>
+        <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+        <script>
+        $(document).ready(function(){
+            $("button").click(function(){
+                alert("jQuery is working perfectly.");
+            });      
+        });
+        </script>
+</head>
 
 <style type='text/css'>
     .embeddedServiceHelpButton .helpButton .uiButton {
