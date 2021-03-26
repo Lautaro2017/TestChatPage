@@ -88,6 +88,10 @@ document.addEventListener(
     false
 );
 
+embedded_svc.addEventHandler("onChatEstablished", function(data) {
+    chatEstablished = true;
+});
+
 function setAvatar(){
     if (agentName){
         if (!avatarImgSet){
