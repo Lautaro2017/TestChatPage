@@ -79,7 +79,7 @@
         var intervalId = window.setInterval(function(){
             if (chatEstablished && !agentName){
                 debugger;
-                var agentNames = $(".agentName");
+                var agentNames = document.getElementsByClassName("agentName");
                 if (agentNames && agentNames.length > 0){
                     agentName = agentNames.html();
                 }
@@ -103,7 +103,7 @@
                 }
                 if (avatarImg){
                     var urlImageCSS = "url('" + avatarImg + "')";
-                    var avatars = $(".embeddedServiceLiveAgentStateChatAvatar.isLightningOutContext .agentIconColor0");
+                    var avatars = document.getElementsByClassName(".embeddedServiceLiveAgentStateChatAvatar.isLightningOutContext .agentIconColor0");
                     avatars.html('');
                     for (let i = 0; i < avatars.length; i++){
                         avatars[i].style.backgroundImage = urlImageCSS;
