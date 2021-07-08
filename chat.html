@@ -125,6 +125,7 @@
     request.open('GET', requestURL);
     request.send();
     request.onload = () => {
+        debugger;
         if (request.status == 200){
             avatarImg = domain + request.response.replaceAll('"', '').replace('ChatData/', '');
         } else {
