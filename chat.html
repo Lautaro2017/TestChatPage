@@ -120,14 +120,13 @@
     function getUserImage(){
     avatarImgSet = true;
     let request = new XMLHttpRequest();
-    let domain = chatURL.replace('chat', 'ChatData');
-    let requestURL = domain + '/services/apexrest/?agentName=' + agentName.replaceAll(' ', '_');
+    let requestURL = chatURL.replace('chat', 'ChatData') + '/services/apexrest/?agentName=' + agentName.replaceAll(' ', '_');
     request.open('GET', requestURL);
     request.send();
     request.onload = () => {
         debugger;
         if (request.status == 200){
-            avatarImg = domain + request.response.replaceAll('"', '').replace('ChatData/', '');
+            avatarImg = orgURL + request.response.replaceAll('"', '').replace('ChatData/', '');
         } else {
             console.log(request.status + ' ' + request.statusText);
             avatarImg = '';
