@@ -33,6 +33,13 @@
 				isOfflineSupportEnabled: true
 			}
 		);
+		embedded_svc.addEventHandler("onChatRequestSuccess", function(data) {
+        		debugger;
+			var contactFirstName = document.getElementsByClassName('FirstName slds-style-inputtext input');
+			var contactLastName = document.getElementsByClassName('LastName slds-style-inputtext input');
+			var fullName= contactFirstName.length > 0 ? contactFirstName[0].value + ' ' + contactLastName[0].value : '';
+			embedded_svc.settings.extraPrechatFormDetails[0].value= fullName;
+		});
 	};
 	if (!window.embedded_svc) {
 		var s = document.createElement('script');
@@ -44,11 +51,4 @@
 	} else {
 		initESW('https://service.force.com');
 	}
-	embedded_svc.addEventHandler("onChatRequestSuccess", function(data) {
-        debugger;
-		var contactFirstName = document.getElementsByClassName('FirstName slds-style-inputtext input');
-		var contactLastName = document.getElementsByClassName('LastName slds-style-inputtext input');
-		var fullName= contactFirstName.length > 0 ? contactFirstName[0].value + ' ' + contactLastName[0].value : '';
-		embedded_svc.settings.extraPrechatFormDetails[0].value= fullName;
-	});
 </script>
