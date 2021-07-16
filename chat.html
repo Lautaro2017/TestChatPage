@@ -1,9 +1,45 @@
 <meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1"/>
+    <h1>
+        Test Chat
+    </h1>
+    
+    <style type='text/css'>
+	.embeddedServiceHelpButton .helpButton .uiButton {
+		background-color: #005290;
+		font-family: "Arial", sans-serif;
+	}
+	.embeddedServiceHelpButton .helpButton .uiButton:focus {
+		outline: 1px solid #005290;
+	}
+</style>
+
 <script type='text/javascript' src='https://service.force.com/embeddedservice/5.0/esw.min.js'></script>
 <script type='text/javascript'>
+
+	var firstName= '';
+	var lastName= '';
+	var fullName= '';
+	var formLoaded= false;
+
 	var initESW = function(gslbBaseURL) {
 		embedded_svc.settings.displayHelpButton = true; //Or false
 		embedded_svc.settings.language = ''; //For example, enter 'en' or 'en-US'
+
+		//embedded_svc.settings.defaultMinimizedText = '...'; //(Defaults to Chat with an Expert)
+		//embedded_svc.settings.disabledMinimizedText = '...'; //(Defaults to Agent Offline)
+
+		//embedded_svc.settings.loadingText = ''; //(Defaults to Loading)
+		//embedded_svc.settings.storageDomain = 'yourdomain.com'; //(Sets the domain for your deployment so that visitors can navigate subdomains during a chat session)
+
+		// Settings for Chat
+		//embedded_svc.settings.directToButtonRouting = function(prechatFormData) {
+			// Dynamically changes the button ID based on what the visitor enters in the pre-chat form.
+			// Returns a valid button ID.
+		//};
+		//embedded_svc.settings.prepopulatedPrechatFields = {}; //Sets the auto-population of pre-chat form fields
+		//embedded_svc.settings.fallbackRouting = []; //An array of button IDs, user IDs, or userId_buttonId
+		//embedded_svc.settings.offlineSupportMinimizedText = '...'; //(Defaults to Contact Us)
+		
         embedded_svc.settings.extraPrechatInfo = [
 			{
 				"entityName":"Contact","saveToTranscript":"Contact","showOnCreate":true,
@@ -13,11 +49,21 @@
 						{"doCreate":false,"doFind":false,"fieldName":"FirstName","isExactMatch":false,"label":"First Name"}, 
 						{"doCreate":false,"doFind":true,"fieldName":"Email","isExactMatch":true,"label":"Web Email"}
 					]
+			}, 
+			{
+				"entityName":"Case","saveToTranscript":"Case","showOnCreate":true,
+				"entityFieldMaps":
+					[
+						{"doCreate":true,"doFind":false,"fieldName":"SuppliedName","isExactMatch":true,"label": "Text"},
+					]
 			}
 		];
-		embedded_svc.settings.extraPrechatFormDetails = [{"label":"Text", "transcriptFields": ["Contact_Full_Name__c"]}];
+
+		embedded_svc.settings.extraPrechatFormDetails = [{"label":"Text","transcriptFields": ["SuppliedName"]}];
+
 		embedded_svc.settings.enabledFeatures = ['LiveAgent'];
 		embedded_svc.settings.entryFeature = 'LiveAgent';
+
 		embedded_svc.init(
 			'https://ywcarf--prodcopy.my.salesforce.com',
 			'https://prodcopy-ywcarf.cs191.force.com/liveAgentSetupFlow',
@@ -33,14 +79,8 @@
 				isOfflineSupportEnabled: true
 			}
 		);
-		embedded_svc.addEventHandler("onChatRequestSuccess", function(data) {
-        		debugger;
-			var contactFirstName = Lautaro;//document.getElementsByClassName('FirstName slds-style-inputtext input');
-			var contactLastName = Test;//document.getElementsByClassName('LastName slds-style-inputtext input');
-			var fullName= contactFirstName + ' ' + contactLastName;//contactFirstName.length > 0 ? contactFirstName[0].value + ' ' + contactLastName[0].value : '';
-			embedded_svc.settings.extraPrechatFormDetails[0].value= fullName;
-		});
 	};
+
 	if (!window.embedded_svc) {
 		var s = document.createElement('script');
 		s.setAttribute('src', 'https://ywcarf--prodcopy.my.salesforce.com/embeddedservice/5.0/esw.min.js');
@@ -51,4 +91,39 @@
 	} else {
 		initESW('https://service.force.com');
 	}
+	// embedded_svc.addEventHandler("onChatRequestSuccess", function(data) {
+	// 	// var contactFirstName = 'Steven';
+	// 	// var contactLastName = 'Galindop';
+	// 	var contactFirstName = document.getElementsByClassName('FirstName slds-style-inputtext input');
+	// 	var contactLastName = document.getElementsByClassName('LastName slds-style-inputtext input');
+	// 	var fullName= contactFirstName.length > 0 ? contactFirstName[0].value + ' ' + contactLastName[0].value : 'test 123';
+	// 	embedded_svc.settings.extraPrechatFormDetails[0].value= fullName
+	// });
+
+	setInterval(() => {
+		if(!formLoaded){
+			firstName= document.getElementsByClassName('FirstName');
+			lastName= document.getElementsByClassName('LastName');
+			if(firstName.length > 0 && lastName.length > 0) {
+				firstName[0].addEventListener("focusout", handleFirstName); 
+				lastName[0].addEventListener("focusout", handleLastName); 
+				formLoaded= true;
+			}
+		}
+	}
+	, 1000);
+
+	function handleFirstName(){
+		firstName= firstName[0].value;
+		fullName= firstName +' '+ lastName;
+		embedded_svc.settings.extraPrechatFormDetails[0].value= fullName
+	}
+	function handleLastName(){
+		lastName= lastName[0].value;
+		fullName= firstName +' '+ lastName;
+		embedded_svc.settings.extraPrechatFormDetails[0].value= fullName
+	}
+
+	
+
 </script>
