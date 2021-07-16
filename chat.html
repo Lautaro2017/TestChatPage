@@ -114,11 +114,13 @@
 	, 1000);
 
 	function handleFirstName(){
+		debugger;
 		firstName= firstName[0].value;
 		fullName= firstName +' '+ lastName;
 		embedded_svc.settings.extraPrechatFormDetails[0].value= fullName
 	}
 	function handleLastName(){
+		debugger;
 		lastName= lastName[0].value;
 		fullName= firstName +' '+ lastName;
 		embedded_svc.settings.extraPrechatFormDetails[0].value= fullName
